@@ -30,6 +30,9 @@ const NavBar = observer(function NavBar() {
               <MenuItemLink  to='/counter'>
                 Counter
               </MenuItemLink>
+              <MenuItemLink  to='/testErrors'>
+                Error
+              </MenuItemLink>
             </Box>
             <MenuItem>
               User Menu

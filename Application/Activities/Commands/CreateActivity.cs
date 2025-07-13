@@ -1,31 +1,33 @@
-﻿using Application.Activities.Queries;
+﻿using System;
+using Application.Activities.DTO;
+using Application.Core;
+using AutoMapper;
+using Domain;
+using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Activities.Commands
+namespace Application.Activities.Commands;
+
+public class CreateActivity
 {
-    public class CreateActivity
+    public class Command : IRequest<Result<string>>
     {
-        public class Command : IRequest<string>
-        {
-            public required Domain.Activity Activity { get; set; }
-        }
+        public required CreateActivityDto ActivityDto { get; set; }
+    }
 
-        public class Handler(AppDbContext context, ILogger<GetActivityList> logger) : IRequestHandler<Command, string>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<string>>
+    {
+        public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
         {
-            public async Task<string> Handle(Command request, CancellationToken cancellationToken)
-            {
-                context.Activities.Add(request.Activity);
-                await context.SaveChangesAsync(cancellationToken);
-                return request.Activity.Id;
-            }
+
+            var activity = mapper.Map<Activity>(request.ActivityDto);
+            context.Activities.Add(activity);
+
+            var result = await context.SaveChangesAsync(cancellationToken) > 0;
+
+            if (!result) return Result<string>.Failure("Failed to create activity", 400);
+            return Result<string>.Success(activity.Id);
         }
     }
 }

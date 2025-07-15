@@ -12,18 +12,36 @@ import { RouterProvider } from 'react-router';
 import { router } from './app/router/routes.tsx';
 import { store, StoreContext } from './lib/stores/store.ts';
 import { ToastContainer } from 'react-toastify';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFnsV3'
+import { enUS, enGB, he, fr, es, type Locale } from 'date-fns/locale';
+import type {} from '@mui/x-date-pickers/AdapterDateFnsV3';
 
+const localeMap: Record<string, Locale> = {
+  'en-US': enUS, // MM/DD/YYYY
+  'en-GB': enGB, // DD/MM/YYYY
+  'he': he,
+  'fr': fr,
+  'es': es,
+};
+
+const getUserLocale = (): Locale => {
+  const lang = navigator.language;
+  return localeMap[lang] || enGB; // default to enGB for DD/MM/YYYY
+};
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
 
   <StrictMode>
-    <StoreContext.Provider value={store}>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <ToastContainer position='bottom-right'  theme='colored' hideProgressBar />
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </StoreContext.Provider>
+    <LocalizationProvider adapterLocale={getUserLocale()} dateAdapter={AdapterDateFns}>
+      <StoreContext.Provider value={store}>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <ToastContainer position='bottom-right' theme='colored' hideProgressBar />
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </StoreContext.Provider>
+    </LocalizationProvider>
   </StrictMode>,
 )

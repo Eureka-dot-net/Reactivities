@@ -3,12 +3,7 @@
 
 // 1. Update your schema to define required strings with defaults
 import { z } from 'zod';
-
-const requiredString = (fieldName: string) =>
-    z.string({
-      required_error: `${fieldName} is required`
-    })
-    .nonempty({ message: `${fieldName} is required` });
+import { requiredString } from '../util/util';
 
 
 export const activitySchema = z.object({

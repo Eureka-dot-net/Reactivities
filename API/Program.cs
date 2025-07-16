@@ -3,8 +3,10 @@ using Application.Activities.DTO;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
+using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -31,6 +33,8 @@ builder.Services.AddMediatR(x =>
 }
 );
 
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+
 // Fix for CS1503: Use AddAutoMapper with a lambda expression instead of passing an assembly  
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfiles>());
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
@@ -43,6 +47,15 @@ builder.Services.AddIdentityApiEndpoints<User>(opt =>
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("IsActivityHost", policy =>
+    {
+        policy.Requirements.Add(new IsHostRequirement());
+    });
+});
+builder.Services.AddTransient<IAuthorizationHandler, IsHostHandler>();
 
 var app = builder.Build();
 

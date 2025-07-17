@@ -13,6 +13,7 @@ type Activity = {
   isGoing: boolean
   isHost: boolean
   hostId: string
+  hostImage: string
   hostDisplayName: string
 }
 
@@ -21,6 +22,11 @@ type Profile = {
   displayName: string
   bio?: string
   imageUrl?: string
+}
+
+type Image = {
+  id: string
+  url: string
 }
 
 type User = {

@@ -6,6 +6,7 @@ using Application.Core;
 using Application.Interfaces;
 using Domain;
 using FluentValidation;
+using Infrastructure.Images;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -34,6 +35,7 @@ builder.Services.AddMediatR(x =>
 );
 
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 // Fix for CS1503: Use AddAutoMapper with a lambda expression instead of passing an assembly  
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfiles>());
@@ -57,6 +59,7 @@ builder.Services.AddAuthorization(opt =>
 });
 builder.Services.AddTransient<IAuthorizationHandler, IsHostHandler>();
 
+builder.Services.Configure<CloudinarySetttings>(builder.Configuration.GetSection("CloudinarySettings"));
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();

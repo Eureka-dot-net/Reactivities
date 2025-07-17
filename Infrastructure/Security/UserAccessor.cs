@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,15 @@ namespace Infrastructure.Security
             return httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)
                 ?? throw new UnauthorizedAccessException("No user is logged in.");
                    
+        }
+
+        public async Task<User> GetUserWithImagesAsync()
+        {
+            var userId = GetUserId();
+            return await dbContext.Users
+                .Include(u => u.Images)
+                .FirstOrDefaultAsync(x => x.Id == userId)
+                   ?? throw new InvalidOperationException("User ID not found.");
         }
     }
 }

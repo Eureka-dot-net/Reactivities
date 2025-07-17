@@ -15,5 +15,7 @@ namespace Domain
 
         // navigation properties
         public ICollection<ActivityAttendee> Activities { get; set; } = [];
+
+        public ICollection<Image> Images { get; set; } = [];
     }
 }

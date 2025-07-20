@@ -40,6 +40,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 // Fix for CS1503: Use AddAutoMapper with a lambda expression instead of passing an assembly  
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfiles>());
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
+
 // Transient services are created each time they are requested
 builder.Services.AddTransient<ExceptionMiddleware>();
 

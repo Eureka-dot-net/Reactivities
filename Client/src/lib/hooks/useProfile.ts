@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import type { ProfileSchema } from "../schemas/profileSchema";
 
 export const useProfile = (id?: string, predicate?: string) => {
-    const [filter, setFilter] = useState<string>('future');
+    const [filter, setFilter] = useState<string | null>(null);
     const queryClient = useQueryClient();
 
     const { data: profile, isLoading: loadingProfile } = useQuery<Profile>({

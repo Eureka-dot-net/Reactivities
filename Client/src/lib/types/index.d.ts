@@ -1,3 +1,8 @@
+type PagedList<T, TCursor> = {
+  items: T[],
+  nextCursor: TCursor
+}
+
 type Activity = {
   id: string
   title: string
@@ -13,7 +18,7 @@ type Activity = {
   isGoing: boolean
   isHost: boolean
   hostId: string
-  hostImage: string
+  hostImage?: string
   hostDisplayName: string
 }
 
@@ -25,6 +30,13 @@ type Profile = {
   followersCount?: number
   followingCount?: number
   isFollowing?: boolean
+}
+
+type UserActivity = {
+  id: string
+  title: string
+  category : string
+  date: Date
 }
 
 type Image = {

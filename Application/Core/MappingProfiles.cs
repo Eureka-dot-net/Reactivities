@@ -26,6 +26,7 @@ public class MappingProfiles : Profile
                 s.Attendees.FirstOrDefault(x => x.IsHost)!.User.DisplayName))
             .ForMember(d => d.HostId, o => o.MapFrom(s =>
                 s.Attendees.FirstOrDefault(x => x.IsHost)!.User.Id));
+        CreateMap<Activity, UserActivityDto>();
         CreateMap<ActivityAttendee, UserProfile>()
             .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.User.DisplayName))
             .ForMember(d => d.Bio, o => o.MapFrom(s => s.User.Bio))

@@ -1,4 +1,5 @@
-﻿using Application.Activities.Queries;
+﻿using Application.Activities.DTO;
+using Application.Activities.Queries;
 using Application.Profiles.Commands;
 using Application.Profiles.DTOs;
 using Application.Profiles.Queries;
@@ -56,6 +57,12 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send
                 (new GetFollowings.Query(userId, predicate)));
+        }
+
+        [HttpGet("{userId}/activities")]
+        public async Task<ActionResult<List<UserActivityDto>>> GetUserActivities([FromRoute] string userId, [FromQuery] string filter = "isFuture")
+        {
+            return HandleResult(await Mediator.Send(new GetUserActivities.Query { UserId = userId, Filter = filter }));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Profiles.Commands;
+﻿using Application.Activities.Queries;
+using Application.Profiles.Commands;
 using Application.Profiles.DTOs;
 using Application.Profiles.Queries;
 using Domain;
@@ -42,6 +43,19 @@ namespace API.Controllers
         public async Task<ActionResult> EditProfile(EditProfile.Command command)
         {
             return HandleResult(await Mediator.Send(new EditProfile.Command(command.DisplayName, command.Bio)));
+        }
+
+        [HttpPost("{userId}/follow")]
+        public async Task<ActionResult> FollowToggle(string userId)
+        {
+            return HandleResult(await Mediator.Send(new FollowToggle.Command(userId)));
+        }
+
+        [HttpGet("{userId}/follow-list")]
+        public async Task<ActionResult<List<UserProfile>>> GetFollowings(string userId, string predicate = "followers")
+        {
+            return HandleResult(await Mediator.Send
+                (new GetFollowings.Query(userId, predicate)));
         }
     }
 }

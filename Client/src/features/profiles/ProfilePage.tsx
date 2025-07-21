@@ -6,14 +6,14 @@ import { useProfile } from "../../lib/hooks/useProfile";
 
 export default function ProfilePage() {
   const {id} = useParams();
-  const {profile, loadingProfile} = useProfile(id);
+  const {loadingProfile} = useProfile(id);
 
   if (loadingProfile) return <Typography>Loading profile...</Typography>
 
   return (
     <Grid2 container>
         <Grid2 size={12}>
-            <ProfileHeader profile={profile} />
+            <ProfileHeader />
             <ProfileContent />
         </Grid2>
     </Grid2>

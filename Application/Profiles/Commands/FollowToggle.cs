@@ -1,7 +1,6 @@
 ﻿using Application.Core;
 using Application.Interfaces;
 using Domain;
-using EficazFramework.Extensions;
 using MediatR;
 using Persistence;
 using System;

@@ -5,7 +5,6 @@ import {
     type FieldValues,
     type UseControllerProps,
 } from "react-hook-form";
-import type { LocationIQSuggestion } from "../../../lib/types";
 import axios from "axios";
 
 // Define a prop type that combines react-hook-form and MUI TextField
